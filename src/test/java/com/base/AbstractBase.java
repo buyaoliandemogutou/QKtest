@@ -1,5 +1,11 @@
 package com.base;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -10,6 +16,9 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
+
 
 public class AbstractBase extends DriverBase{
 	public void beforeClass(String url) {
@@ -105,4 +114,26 @@ public class AbstractBase extends DriverBase{
 	public void visibilityOfelement(int time,By by){
 		  new WebDriverWait(driver, time).until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(by)));
 	}
+	
+ 
+	public JSONObject readJsonFromUrl(String url) throws IOException, JSONException { 
+		  InputStream is = new URL(url).openStream(); 
+		  try { 
+		   BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8"))); 
+		   StringBuilder sb = new StringBuilder(); 
+		   int cp; 
+		   while ((cp = rd.read()) != -1) { 
+			   sb.append((char) cp); 
+		   } 
+		   String jsonText = sb.toString();
+		   //返回json数据不符格式，去掉前面的 qktzCallBack(
+		   jsonText=jsonText.substring(13);
+		   JSONObject json = JSONObject.fromObject(jsonText); 
+		   return json; 
+		  } finally { 
+			  is.close(); 
+		  } 
+	} 
+		
 }
+	
