@@ -19,11 +19,16 @@ public class NiuGTest extends AbstractBase{
 		@Test(dataProvider="inputData")
 		public void  CegTest(String gp,String mobilePhone,String code) throws JSONException, IOException, InterruptedException, ServletException{			
 			beforeClass("http://ad.cjs.com.cn/template/html/81/5b46bbcbcb081.html");
+			String title=driver.getTitle();
+			String sourceType=getReffer("\"sid\":", 9);
+			sourceType=sourceType.replace("\"sid\":", "SourceType=");
+			String reffer=getReffer("\"reffer\":", 10);
+			reffer=reffer.replace("\"reffer\":", "reffer=");
 			clearAndSendkeys(By.id("gp"), gp);
 			clickElement(By.id("btnSave"));
 			clearAndSendkeys(By.id("mobilePhone"), mobilePhone);
 			clickElement(By.className("getinfo"));			
-			String url="https://zyapi.qktz.com.cn/api/user/index?callback=jQuery183043148598985648_1532414181476&SourceType=205&reffer=1&bz=&MobilePhone="+mobilePhone+"&Title=&_=1532414292748&stockCode="+gp;		
+			String url="https://zyapi.qktz.com.cn/api/user/index?callback=jQuery183043148598985648_1532414181476&"+sourceType+"&"+reffer+"&bz=&MobilePhone="+mobilePhone+"&Title="+title+"&_=1532414292748&stockCode="+gp;		
 			JSONObject json=readJsonFromUrl(url);						
 			String jsonValue=json.toString();
 			Assert.assertEquals( jsonValue.startsWith(code),true);
@@ -32,9 +37,14 @@ public class NiuGTest extends AbstractBase{
 		@Test(dataProvider="mobilePhone")
 		public void RenxTest(String mobilePhone,String code) throws InterruptedException, JSONException, IOException, ServletException{
 			beforeClass("http://ad.cjs.com.cn/template/html/42/5b46bbc2afd42.html");
+			String title=driver.getTitle();
+			String sourceType=getReffer("\"sid\":", 9);
+			sourceType=sourceType.replace("\"sid\":", "SourceType=");
+			String reffer=getReffer("\"reffer\":", 10);
+			reffer=reffer.replace("\"reffer\":", "reffer=");
 			clearAndSendkeys(By.id("mobilePhone"), mobilePhone);
 			clickElement(By.className("phoneBtn"));						
-			String url="https://zyapi.qktz.com.cn/api/user/index?callback=jQuery183043148598985648_1532414181476&SourceType=205&reffer=1&bz=&MobilePhone="+mobilePhone+"&Title=&_=1532414292748";
+			String url="https://zyapi.qktz.com.cn/api/user/index?callback=jQuery183043148598985648_1532414181476&"+sourceType+"&"+reffer+"&bz=&MobilePhone="+mobilePhone+"&Title="+title+"&_=1532414292748";
 			JSONObject json=readJsonFromUrl(url);						
 			String jsonValue=json.toString();
 			Assert.assertEquals(jsonValue.startsWith(code),true);			
@@ -48,7 +58,7 @@ public class NiuGTest extends AbstractBase{
 		@DataProvider(name="inputData")
 		public Object[][] inputData(){
 			Object[][] storageList=new Object[][]{
-				{"600000","18109045175","{\"code\":false"},{"60000","18109045175","{\"code\":false"},{"600000","18583246119","{\"code\":true"}
+				{"600000","18109045175","{\"code\":false"},{"600000","18583246119","{\"code\":true"}
 			};		
 			return storageList;
 		}
