@@ -120,8 +120,32 @@ public class AbstractBase extends DriverBase{
 	public void visibilityOfelement(int time,By by){
 		  new WebDriverWait(driver, time).until(ExpectedConditions.invisibilityOfAllElements(driver.findElements(by)));
 	}
+	/*
+	 * 获取网页源代码，从中提取出想要的数据
+	 * @parameter code 想要查找的数据标识
+	 * @parameter i 从标识开始，取出标识的前i位
+	 */
+	public String getPageSource(String code,int i){
+		String pageSource=driver.getPageSource();
+		int SourceTypeid=pageSource.indexOf(code);		
+		String SourceType=pageSource.substring(SourceTypeid, SourceTypeid+i);		
+		return SourceType;		
+	}
+	/*
+	 * 获取到的sid和reffer需要格式化
+	 */
+	public String getReAndSot(String code){
+		if(code.equals("\"sid\":")){
+			String sourceType=getPageSource("\"sid\":", 9);
+			code=sourceType.replace("\"sid\":", "SourceType=");			
+		}else if(code.equals("\"reffer\":")){
+			String reffer=getPageSource("\"reffer\":", 10);
+			code=reffer.replace("\"reffer\":", "reffer=");			
+		}
+		return code;	
+	}
 	
- 
+	
 	public JSONObject readJsonFromUrl(String url) throws IOException, JSONException { 
 		  InputStream is = new URL(url).openStream(); 
 		  try { 

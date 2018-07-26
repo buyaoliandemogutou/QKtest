@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 
 
 public class NiuGTest extends AbstractBase{
+		public String urlBase="https://zyapi.qktz.com.cn/api/user/index?callback=jQuery183043148598985648_1532414181476&";
 		/*
 		 * 精准测股
 		 */
@@ -20,15 +21,13 @@ public class NiuGTest extends AbstractBase{
 		public void  CegTest(String gp,String mobilePhone,String code) throws JSONException, IOException, InterruptedException, ServletException{			
 			beforeClass("http://ad.cjs.com.cn/template/html/81/5b46bbcbcb081.html");
 			String title=driver.getTitle();
-			String sourceType=getReffer("\"sid\":", 9);
-			sourceType=sourceType.replace("\"sid\":", "SourceType=");
-			String reffer=getReffer("\"reffer\":", 10);
-			reffer=reffer.replace("\"reffer\":", "reffer=");
+			String sourceType=getReAndSot("\"sid\":");			
+			String reffer=getReAndSot("\"reffer\":");			
 			clearAndSendkeys(By.id("gp"), gp);
 			clickElement(By.id("btnSave"));
 			clearAndSendkeys(By.id("mobilePhone"), mobilePhone);
 			clickElement(By.className("getinfo"));			
-			String url="https://zyapi.qktz.com.cn/api/user/index?callback=jQuery183043148598985648_1532414181476&"+sourceType+"&"+reffer+"&bz=&MobilePhone="+mobilePhone+"&Title="+title+"&_=1532414292748&stockCode="+gp;		
+			String url=urlBase+sourceType+"&"+reffer+"&bz=&MobilePhone="+mobilePhone+"&Title="+title+"&_=1532414292748&stockCode="+gp;		
 			JSONObject json=readJsonFromUrl(url);						
 			String jsonValue=json.toString();
 			Assert.assertEquals( jsonValue.startsWith(code),true);
@@ -38,13 +37,11 @@ public class NiuGTest extends AbstractBase{
 		public void RenxTest(String mobilePhone,String code) throws InterruptedException, JSONException, IOException, ServletException{
 			beforeClass("http://ad.cjs.com.cn/template/html/42/5b46bbc2afd42.html");
 			String title=driver.getTitle();
-			String sourceType=getReffer("\"sid\":", 9);
-			sourceType=sourceType.replace("\"sid\":", "SourceType=");
-			String reffer=getReffer("\"reffer\":", 10);
-			reffer=reffer.replace("\"reffer\":", "reffer=");
+			String sourceType=getReAndSot("\"sid\":");			
+			String reffer=getReAndSot("\"reffer\":");	
 			clearAndSendkeys(By.id("mobilePhone"), mobilePhone);
 			clickElement(By.className("phoneBtn"));						
-			String url="https://zyapi.qktz.com.cn/api/user/index?callback=jQuery183043148598985648_1532414181476&"+sourceType+"&"+reffer+"&bz=&MobilePhone="+mobilePhone+"&Title="+title+"&_=1532414292748";
+			String url=urlBase+sourceType+"&"+reffer+"&bz=&MobilePhone="+mobilePhone+"&Title="+title+"&_=1532414292748";
 			JSONObject json=readJsonFromUrl(url);						
 			String jsonValue=json.toString();
 			Assert.assertEquals(jsonValue.startsWith(code),true);			
