@@ -204,8 +204,7 @@ public class AbstractBase extends DriverBase{
         System.out.println(request.getRequestURI());//得到请求的资源
         System.out.println(request.getQueryString());
         System.out.println(request.getRemoteAddr());//得到来访者IP
-        System.out.println(request.getRemoteHost());
-        //由于没有在dns上注册所以打印结果还是127.0.0.1,如果是百度访问这个程序，则打印www.baidu.com
+        System.out.println(request.getRemoteHost());       
         System.out.println(request.getRemotePort());//得到请求的资源
         System.out.println(request.getMethod());//得到请求的资源
 	}
