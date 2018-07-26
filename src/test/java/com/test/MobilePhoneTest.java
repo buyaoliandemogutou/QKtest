@@ -30,8 +30,7 @@ public class MobilePhoneTest extends AbstractBase{
 			Alert alert = driver.switchTo().alert();
 			Assert.assertEquals(alert.getText(), "请输入正确的手机号码！");
 		}else 
-			assertCurrentUrl(expectUrl);
-		
+			assertCurrentUrl(expectUrl);		
 	}
 	
 	@AfterMethod
