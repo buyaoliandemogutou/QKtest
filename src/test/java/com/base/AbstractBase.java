@@ -14,7 +14,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -27,6 +29,7 @@ import net.sf.json.JSONObject;
 
 public class AbstractBase extends DriverBase{
 	HttpServletRequest request;
+	public String expectUrl="http://zy1.dyrt99.com/template/cjs/cjs201807/cjs072601/index.html";
 	public void beforeClass(String url) {
 		setDriver();			
 		driver.get(url);	
@@ -72,10 +75,14 @@ public class AbstractBase extends DriverBase{
 		driver.close();
 		driver.switchTo().window(it.get(0));
 	}
-	
-	public void assertCurrentUrl(String actual, String expected){		
-		Assert.assertEquals(actual, expected);
+	/*
+	 * 获取当前地址，与期望URL对比
+	 */
+	public void assertCurrentUrl(String expectUrl){
+		String currentUrl=driver.getCurrentUrl();
+		Assert.assertEquals(currentUrl, expectUrl);		
 	}
+	
 
 	public void assertEquals(By by,String expected){
 		boolean actual=getElementValue(by).contains(expected);
@@ -145,6 +152,25 @@ public class AbstractBase extends DriverBase{
 		return code;	
 	}
 	
+	/*
+	 * 捕获当前页面是否有alert弹框
+	 */
+	public boolean getAlert(){
+		boolean flag = false;        
+        try {
+            new WebDriverWait(driver, 5).until(ExpectedConditions
+                    .alertIsPresent());
+            Alert alert = driver.switchTo().alert();
+            flag = true;
+            // alert.accept();
+        } catch (NoAlertPresentException NofindAlert) {
+            // TODO: handle exception
+            NofindAlert.printStackTrace();
+            assertCurrentUrl(expectUrl);
+            // throw NofindAlert;
+        }
+		return flag;		
+	}
 	
 	public JSONObject readJsonFromUrl(String url) throws IOException, JSONException { 
 		  InputStream is = new URL(url).openStream(); 

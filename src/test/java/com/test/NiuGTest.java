@@ -31,6 +31,7 @@ public class NiuGTest extends AbstractBase{
 			JSONObject json=readJsonFromUrl(url);						
 			String jsonValue=json.toString();
 			Assert.assertEquals( jsonValue.startsWith(code),true);
+			
 		}
 		
 		@Test(dataProvider="mobilePhone")
@@ -46,6 +47,7 @@ public class NiuGTest extends AbstractBase{
 			String jsonValue=json.toString();
 			Assert.assertEquals(jsonValue.startsWith(code),true);			
 		}
+		
 		@AfterMethod
 		public void aftermethod(){
 			driver.close();
