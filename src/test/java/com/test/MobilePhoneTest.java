@@ -40,7 +40,7 @@ public class MobilePhoneTest extends AbstractBase{
 	}
 	
 	@DataProvider(name="mobilePhone")
-	public Object[][] mobilePhone(){
+	public Object[][] mobilePhone(){ 
 		Object[][] storageList=new Object[][]{
 			{"13108225698",0},{"15225632565",0},{"17066986598",0},{"19983246119",0},{"19883246119",0},{"18583246119",0},{"14700253698",0},{"14803699856",1},{"16639859865",1},{"17256896325",1}
 		};		
