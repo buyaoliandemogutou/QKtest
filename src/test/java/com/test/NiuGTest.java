@@ -18,26 +18,22 @@ public class NiuGTest extends AbstractBase{
 		@Test(dataProvider="inputData")
 		public void  CegTest(String gp,String mobilePhone,String code) throws JSONException, IOException, InterruptedException, ServletException{			
 			beforeClass("http://ad.cjs.com.cn/template/html/81/5b46bbcbcb081.html");
-			String title=driver.getTitle();
-			String sourceType=getReAndSot("\"sid\":");			
-			String reffer=getReAndSot("\"reffer\":");			
+			String url=getUrl();		
 			clearAndSendkeys(By.id("gp"), gp);
 			clickElement(By.id("btnSave"));
 			clearAndSendkeys(By.id("mobilePhone"), mobilePhone);
 			clickElement(By.className("getinfo"));			
-			String url=urlBase+sourceType+"&"+reffer+"&bz=&MobilePhone="+mobilePhone+"&Title="+title+"&_=1532414292748&stockCode="+gp;		
+			url=url+"&bz=&MobilePhone="+mobilePhone+"&_=1532414292748&stockCode="+gp;		
 			assertJson(url, code);			
 		}
 		
 		@Test(dataProvider="mobilePhone")
 		public void RenxTest(String mobilePhone,String code) throws InterruptedException, JSONException, IOException, ServletException{
 			beforeClass("http://ad.cjs.com.cn/template/html/42/5b46bbc2afd42.html");
-			String title=driver.getTitle();
-			String sourceType=getReAndSot("\"sid\":");			
-			String reffer=getReAndSot("\"reffer\":");	
+			String url=getUrl();	
 			clearAndSendkeys(By.id("mobilePhone"), mobilePhone);
 			clickElement(By.className("phoneBtn"));						
-			String url=urlBase+sourceType+"&"+reffer+"&bz=&MobilePhone="+mobilePhone+"&Title="+title+"&_=1532414292748";			
+			url=url+"&bz=&MobilePhone="+mobilePhone+"&_=1532414292748";			
 			assertJson(url, code);			
 		}
 		

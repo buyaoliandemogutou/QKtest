@@ -138,6 +138,9 @@ public class AbstractBase extends DriverBase{
 	}
 	/*
 	 * 获取到的sid和reffer需要格式化
+	 * sid:替换为SourceType=
+	 * reffer:替换为reffer=
+	 * 目前只获取sid reffer  所以写死，后期需要再加	
 	 */
 	public String getReAndSot(String code){
 		if(code.equals("\"sid\":")){
@@ -149,9 +152,17 @@ public class AbstractBase extends DriverBase{
 		}
 		return code;	
 	}
-	
-	
-	
+	/*
+	 * 传入参数，获取指定字段的值，拼接接口地址
+	 * 目前只获取sid reffer  所以写死，后期需要再加	 
+	 */
+	public String getUrl(){
+		String title=driver.getTitle();
+		String sourceType=getReAndSot("\"sid\":");			
+		String reffer=getReAndSot("\"reffer\":");
+		String url=urlBase+sourceType+"&"+reffer+"&Title="+title;
+		return url;		
+	}	
 	
 	/*
 	 * 捕获当前页面是否有alert弹框
