@@ -182,8 +182,8 @@ public class AbstractBase extends DriverBase{
 			   sb.append((char) cp); 
 		   } 
 		   String jsonText = sb.toString();
-		   //返回json数据不符格式，去掉前面的 qktzCallBack(
-		   jsonText=jsonText.substring(13);
+		   //返回json数据不符格式，去掉前面的 qktzCallBack(,最后的括号
+		   jsonText=jsonText.substring(13,jsonText.length()-1);
 		   JSONObject json = JSONObject.fromObject(jsonText); 
 		   return json; 
 		  } finally { 

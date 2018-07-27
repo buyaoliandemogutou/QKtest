@@ -17,7 +17,7 @@ import junit.framework.Assert;
 public class MobilePhoneTest extends AbstractBase{
 	public String expectUrl="http://zy1.dyrt99.com/template/cjs/cjs201807/cjs072601/index.html";
 	/*
-	 *电话号码正则 (13[0-9]|15[012356789]|17[01678]|18[0-9]|14[57])[0-9]{8}$")
+	 *电话号码正则 (13[0-9]|15[012356789]|17[0134678]|19[89]|18[0-9]|14[57])[0-9]{8}
 	 */
 	@Test(dataProvider="mobilePhone")
 	public void ZhenGTest(String mobilePhone,int i){
@@ -42,7 +42,7 @@ public class MobilePhoneTest extends AbstractBase{
 	@DataProvider(name="mobilePhone")
 	public Object[][] mobilePhone(){
 		Object[][] storageList=new Object[][]{
-			{"13108225698",0},{"15225632565",0},{"17066986598",0},{"18583246119",0},{"14700253698",0},{"14803699856",1},{"16639859865",1},{"19941770859",1},{"17256896325",1}
+			{"13108225698",0},{"15225632565",0},{"17066986598",0},{"19983246119",0},{"19883246119",0},{"18583246119",0},{"14700253698",0},{"14803699856",1},{"16639859865",1},{"19941770859",1},{"17256896325",1}
 		};		
 		return storageList;
 	}
