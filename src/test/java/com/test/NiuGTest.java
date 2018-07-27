@@ -10,8 +10,7 @@ import net.sf.json.JSONException;
 import javax.servlet.ServletException;    
 
 
-public class NiuGTest extends AbstractBase{
-		public String urlBase="https://zyapi.qktz.com.cn/api/user/index?callback=jQuery183043148598985648_1532414181476&";
+public class NiuGTest extends AbstractBase{		
 		/*
 		 * 精准测股
 		 */

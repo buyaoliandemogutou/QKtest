@@ -12,6 +12,8 @@ import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
@@ -208,6 +210,18 @@ public class AbstractBase extends DriverBase{
 		JSONObject json=readJsonFromUrl(url);						
 		String jsonValue=json.toString();
 		Assert.assertEquals(jsonValue.startsWith(code),true);
+	}
+	
+	/*
+	 * 根据传参值捕获alert
+	 */
+	public void assertAlert(int i){
+		if(i==1){
+			Alert alert = driver.switchTo().alert();
+			Assert.assertEquals(alert.getText(), "请输入正确的手机号码！");
+		}else if(i==0){
+			assertCurrentUrl(expectUrl);
+		}			
 	}
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)

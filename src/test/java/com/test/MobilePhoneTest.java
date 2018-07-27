@@ -1,13 +1,10 @@
 package com.test;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import com.base.AbstractBase;
-
-import junit.framework.Assert;
 
 /*
  * 验证所有连接后缀带#test的地址，
@@ -26,11 +23,7 @@ public class MobilePhoneTest extends AbstractBase{
 		clickElement(By.id("btnSave"));
 		clearAndSendkeys(By.id("mobilePhone"), mobilePhone);
 		clickElement(By.className("getinfo"));		
-		if(i==1){
-			Alert alert = driver.switchTo().alert();
-			Assert.assertEquals(alert.getText(), "请输入正确的手机号码！");
-		}else 
-			assertCurrentUrl(expectUrl);		
+		assertAlert(i);		
 	}
 	
 	@AfterMethod
