@@ -2,13 +2,11 @@ package com.test;
 
 import java.io.IOException;
 import org.openqa.selenium.By;
-import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import com.base.AbstractBase;
 import net.sf.json.JSONException;
-import net.sf.json.JSONObject;
 import javax.servlet.ServletException;    
 
 
@@ -28,10 +26,7 @@ public class NiuGTest extends AbstractBase{
 			clearAndSendkeys(By.id("mobilePhone"), mobilePhone);
 			clickElement(By.className("getinfo"));			
 			String url=urlBase+sourceType+"&"+reffer+"&bz=&MobilePhone="+mobilePhone+"&Title="+title+"&_=1532414292748&stockCode="+gp;		
-			JSONObject json=readJsonFromUrl(url);						
-			String jsonValue=json.toString();
-			Assert.assertEquals( jsonValue.startsWith(code),true);
-			
+			assertJson(url, code);			
 		}
 		
 		@Test(dataProvider="mobilePhone")
@@ -42,10 +37,8 @@ public class NiuGTest extends AbstractBase{
 			String reffer=getReAndSot("\"reffer\":");	
 			clearAndSendkeys(By.id("mobilePhone"), mobilePhone);
 			clickElement(By.className("phoneBtn"));						
-			String url=urlBase+sourceType+"&"+reffer+"&bz=&MobilePhone="+mobilePhone+"&Title="+title+"&_=1532414292748";
-			JSONObject json=readJsonFromUrl(url);						
-			String jsonValue=json.toString();
-			Assert.assertEquals(jsonValue.startsWith(code),true);			
+			String url=urlBase+sourceType+"&"+reffer+"&bz=&MobilePhone="+mobilePhone+"&Title="+title+"&_=1532414292748";			
+			assertJson(url, code);			
 		}
 		
 		@AfterMethod
