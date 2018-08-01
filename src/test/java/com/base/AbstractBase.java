@@ -214,8 +214,7 @@ public class AbstractBase extends DriverBase{
 	 * regex 获取数据的正则
 	 */	
 	public  List<String> getURL(String interfaceUrl,String regex){
-		String str = getHttpInterface(interfaceUrl);
-		System.out.println(str);
+		String str = getHttpInterface(interfaceUrl);		
 	    List<String> lists = getSubUtil(str,regex);	    
 		return lists;
 	}
