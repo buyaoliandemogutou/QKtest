@@ -4,11 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,7 +38,30 @@ public class AbstractBase extends DriverBase{
 		setDriver();			
 		driver.get(url);	
 	}
-	
+	/*
+	 * 需要输入股票代码的模型
+	 */
+	public void ZhenGTest(String mobilePhone,int i,String gp,String code) throws JSONException, IOException{		
+		String url=getUrl();
+		clearAndSendkeys(By.id("gp"), gp);
+		clickElement(By.id("btnSave"));
+		clearAndSendkeys(By.id("mobilePhone"), mobilePhone);
+		clickElement(By.className("getinfo"));	
+		assertAlert(i);	
+		url=url+"&bz=&MobilePhone="+mobilePhone+"&_=1532414292748&stockCode="+gp;
+		assertJson(url,code);			
+	}
+	/*
+	 * 只需要输入电话号码的模板
+	 */
+	public void RenxTest(String mobilePhone,int i,String code) throws InterruptedException, JSONException, IOException, ServletException{		
+		String url=getUrl();	
+		clearAndSendkeys(By.id("mobilePhone"), mobilePhone);
+		clickElement(By.className("phoneBtn"));
+		assertAlert(i);
+		url=url+"&bz=&MobilePhone="+mobilePhone+"&_=1532414292748";			
+		assertJson(url, code);			
+	}
 	public void  closeDriver(){
 		driver.close();
 	}
@@ -81,8 +108,7 @@ public class AbstractBase extends DriverBase{
 	public void assertCurrentUrl(String expectUrl){
 		String currentUrl=driver.getCurrentUrl();
 		Assert.assertEquals(currentUrl, expectUrl);		
-	}
-	
+	}	
 
 	public void assertEquals(By by,String expected){
 		boolean actual=getElementValue(by).contains(expected);
@@ -165,7 +191,34 @@ public class AbstractBase extends DriverBase{
 		String url=urlBase+sourceType+"&"+reffer+"&Title="+title;
 		return url;		
 	}	
-	
+	/*
+	 * 根据正则表达式获取指定字符串间的数据
+	 * @parameter soap 对比源字符串
+	 * @parameter rgex 正则表达式
+	 */
+	public static List<String> getSubUtil(String soap,String rgex){  
+        List<String> list = new ArrayList<String>();  
+        Pattern pattern = Pattern.compile(rgex);// 匹配的模式  
+        Matcher m = pattern.matcher(soap);  
+        while (m.find()) {  
+            int i = 1;  
+            list.add(m.group(i));  
+            i++;  
+        }  
+        return list;  
+    } 
+	/*
+	 * 获取接口的数据
+	 * 根据正则获取想要的数据
+	 * interfaceUrl 接口地址
+	 * regex 获取数据的正则
+	 */	
+	public  List<String> getURL(String interfaceUrl,String regex){
+		String str = getHttpInterface(interfaceUrl);
+		System.out.println(str);
+	    List<String> lists = getSubUtil(str,regex);	    
+		return lists;
+	}
 	/*
 	 * 捕获当前页面是否有alert弹框
 	 */
@@ -224,6 +277,95 @@ public class AbstractBase extends DriverBase{
 		}			
 	}
 	
+	
+	public static String getURLContent() throws Exception {
+		String strURL = "";
+        URL url = new URL(strURL);
+        HttpURLConnection httpConn = (HttpURLConnection)url.openConnection();
+        httpConn.setRequestMethod("GET");
+        httpConn.connect();
+            
+        BufferedReader reader = new BufferedReader(new InputStreamReader(httpConn.getInputStream()));
+        String line;
+        StringBuffer buffer = new StringBuffer();
+        while ((line = reader.readLine()) != null) {
+        	buffer.append(line);
+        }
+        reader.close();
+        httpConn.disconnect();
+         
+       System.out.println(buffer.toString());
+       return buffer.toString();
+	}
+	
+	/**
+	 * 程序中访问http数据接口
+	 */
+	public static String getURLContent(String urlStr) {
+		/** 网络的url地址 */
+		URL url = null;
+		/** http连接 */
+		HttpURLConnection httpConn = null;
+		/**//** 输入流 */
+		BufferedReader in = null;
+		StringBuffer sb = new StringBuffer();
+		try {
+			url = new URL(urlStr);
+			in = new BufferedReader(new InputStreamReader(url.openStream(), "GBK"));
+			String str = null;
+			while ((str = in.readLine()) != null) {
+				sb.append(str);
+			}
+		} catch (Exception ex) {
+ 
+		} finally {
+			try {
+				if (in != null) {
+					in.close();
+				}
+			} catch (IOException ex) {
+			}
+		}
+		String result = sb.toString();
+		System.out.println(result);
+		return result;
+	}
+	// 调用http接口获取数据
+    public static String getHttpInterface(String path){
+        BufferedReader in = null;
+        StringBuffer result = null;
+        try {
+            URL url = new URL(path);
+            //打开和url之间的连接
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Charset", "utf-8");
+            connection.connect();
+ 
+            result = new StringBuffer();
+            //读取URL的响应
+            in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result.append(line);
+            }
+            return result.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         /**
